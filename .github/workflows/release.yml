@@ -45,8 +45,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: true
           BUMP_TYPE: ${{ github.event.inputs.bump_type}}
-        outputs:
-          new_tag: ${{ steps.bump_dry.outputs.new_tag }}
 
       - name: "7. Bump version"
         if: steps.bump_dry.outputs.exit_code == 0
