@@ -45,6 +45,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: true
           BUMP_TYPE: ${{ github.event.inputs.bump_type}}
+        outputs:
+          new_tag: ${{ steps.bump_dry.outputs.new_tag }}
 
       - name: "7. Bump version"
         if: steps.bump_dry.outputs.exit_code == 0
@@ -79,7 +81,6 @@ jobs:
           draft: false
 
   deploy-docker:
-    if: jobs.release.steps.bump_dry.outputs.exit_code == 0
     needs: [release]
     runs-on: ubuntu-latest
     steps:
@@ -111,7 +112,6 @@ jobs:
 
 
   deploy-docs:
-    if: jobs.release.steps.bump_dry.outputs.exit_code == 0
     runs-on: ubuntu-latest
     needs: [release]
     steps:
