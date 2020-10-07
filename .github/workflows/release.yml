@@ -79,7 +79,7 @@ jobs:
           draft: false
 
   deploy-docker:
-    if: release.steps.bump_dry.outputs.exit_code == 0
+    if: jobs.release.steps.bump_dry.outputs.exit_code == 0
     needs: [release]
     runs-on: ubuntu-latest
     steps:
@@ -111,7 +111,7 @@ jobs:
 
 
   deploy-docs:
-    if: release.steps.bump_dry.outputs.exit_code == 0
+    if: jobs.release.steps.bump_dry.outputs.exit_code == 0
     runs-on: ubuntu-latest
     needs: [release]
     steps:
