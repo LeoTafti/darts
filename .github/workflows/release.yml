@@ -47,12 +47,12 @@ jobs:
           BUMP_TYPE: ${{ github.event.inputs.bump_type}}
 
       - name: "7. Bump version"
-        if: ${{ steps.bump_dry.outputs.outputs.exit_code == 0 }}
+        if: ${{ steps.bump_dry.outputs.exit_code == 0 }}
         run: |
           bump2version --new-version ${{ steps.bump_dry.outputs.new_tag }} patch
 
       - name: "8. Commit new version"
-        if: ${{ steps.bump_dry.outputs.outputs.exit_code == 0 }}
+        if: ${{ steps.bump_dry.outputs.exit_code == 0 }}
         uses: stefanzweifel/git-auto-commit-action@v4.1.6
         with:
           commit_message: Release ${{ steps.bump_dry.outputs.new_tag }}
@@ -61,14 +61,14 @@ jobs:
           commit_user_email: info@unit8.co
 
       - name: "9. Publish new tag"
-        if: ${{ steps.bump_dry.outputs.outputs.exit_code == 0 }}
+        if: ${{ steps.bump_dry.outputs.exit_code == 0 }}
         uses: LeoTafti/github-tag-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUSTOM_TAG: ${{steps.bump_dry.outputs.new_tag}}
 
       - name: "10. Create new release"
-        if: ${{ steps.bump_dry.outputs.outputs.exit_code == 0 }}
+        if: ${{ steps.bump_dry.outputs.exit_code == 0 }}
         id: create_release
         uses: actions/create-release@latest
         env:
@@ -79,7 +79,7 @@ jobs:
           draft: false
 
   deploy-docker:
-    if: ${{ steps.bump_dry.outputs.outputs.exit_code == 0 }}
+    if: ${{ steps.bump_dry.outputs.exit_code == 0 }}
     needs: [release]
     runs-on: ubuntu-latest
     steps:
@@ -111,7 +111,7 @@ jobs:
 
 
   deploy-docs:
-    if: ${{ steps.bump_dry.outputs.outputs.exit_code == 0 }}
+    if: ${{ steps.bump_dry.outputs.exit_code == 0 }}
     runs-on: ubuntu-latest
     needs: [release]
     steps:
