@@ -47,7 +47,6 @@ jobs:
           BUMP_TYPE: ${{ github.event.inputs.bump_type}}
 
       - name: "7. Bump version"
-        if: steps.bump_dry.outputs.exit_code == 0
         run: |
           bump2version --new-version ${{ steps.bump_dry.outputs.new_tag }} patch
 
